@@ -1,3 +1,4 @@
+import { SignoComponent } from './pages/signo/signo.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { TokenComponent } from './login/recuperar/token/token.component';
 import { RecuperarComponent } from './login/recuperar/recuperar.component';
@@ -17,6 +18,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MedicoComponent } from './pages/medico/medico.component';
 import { GuardService } from './_service/guard.service';
 import { Not401Component } from './pages/not401/not401.component';
+import { SignoEdicionComponent } from './pages/signo/signo-edicion/signo-edicion.component';
 
 const routes: Routes = [
   {
@@ -50,7 +52,11 @@ const routes: Routes = [
   },  
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'perfil', component: PerfilComponent, canActivate: [GuardService]}
+  { path: 'perfil', component: PerfilComponent, canActivate: [GuardService]},
+  { path: 'signo-vitales', component: SignoComponent, children: [
+    { path: 'nuevo', component: SignoEdicionComponent },
+    { path: 'edicion/:id', component: SignoEdicionComponent }
+  ]}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

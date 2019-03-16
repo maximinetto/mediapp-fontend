@@ -15,7 +15,7 @@ export class SignoService {
   constructor(private http: HttpClient ) { }
 
   listarPageable(page: number, size: number){
-      return this.http.get(`${this.url}/signospageable?page=${page}&size=${size}`);
+      return this.http.get(`${this.url}/signos/pageable?page=${page}&size=${size}&sort=paciente.apellidos,paciente.nombres`);
   }
 
   listarPorId(id: number){
