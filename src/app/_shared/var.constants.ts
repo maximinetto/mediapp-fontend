@@ -4,3 +4,4 @@ export const REINTENTOS = 3;
 export const TOKEN_AUTH_USERNAME = 'mitomediapp';
 export const TOKEN_AUTH_PASSWORD = 'mito89codex';
 export const TOKEN_NAME = 'access_token';
+export const DEFAULT_SIZE_PAGE = 10;

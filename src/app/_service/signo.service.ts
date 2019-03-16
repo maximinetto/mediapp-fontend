@@ -18,6 +18,10 @@ export class SignoService {
       return this.http.get(`${this.url}/signos/pageable?page=${page}&size=${size}&sort=paciente.apellidos,paciente.nombres`);
   }
 
+  listarPageablePorPaciente(page: number, size: number, busqueda: string){
+    return this.http.get(`${this.url}/signos/busqueda/pageable?page=${page}&size=${size}&busqueda=${busqueda}&sort=paciente.nombres,paciente.apellidos,fecha`);
+  }
+
   listarPorId(id: number){
     return this.http.get<Signo>(`${this.url}/signos/${id}`);
   }
