@@ -23,15 +23,17 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Temperatura" [(ngModel)]="temperatura" formControlName="temperatura" >
+    <input matInput placeholder="Temperatura" [(ngModel)]="temperatura" formControlName="temperatura" NumbersOnly
+    [allowDecimals]="true" >
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Pulso" [(ngModel)]="pulso" formControlName="pulso">
+    <input matInput placeholder="Pulso" [(ngModel)]="pulso" formControlName="pulso" NumbersOnly [allowDecimals] = "false">
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Ritmo Respiratorio" [(ngModel)]="ritmo" formControlName="ritmo">
+    <input matInput placeholder="Ritmo Respiratorio" [(ngModel)]="ritmo" formControlName="ritmo" NumbersOnly 
+    [allowDecimals] = "false">
   </mat-form-field>
 
 </form>  

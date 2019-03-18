@@ -1,3 +1,4 @@
+import { NumbersOnly } from './_shared/numbers_only';
 import { ServerErrorsInterceptor } from './_shared/server-errors.interceptor';
 import { TOKEN_NAME } from './_shared/var.constants';
 import { MaterialModule } from './material/material.module';
@@ -61,7 +62,8 @@ export function tokenGetter() {
     TokenComponent,
     PerfilComponent,
     SignoComponent,
-    SignoEdicionComponent
+    SignoEdicionComponent,
+    NumbersOnly
   ],
   entryComponents: [DialogoComponent, DialogoDetalleComponent],
   imports: [

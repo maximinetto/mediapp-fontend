@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 export class SignoEdicionComponent implements OnInit {
 
   form: FormGroup;
-  myControlPaciente: FormControl = new FormControl();
+  myControlPaciente: FormControl = new FormControl('',Validators.required);
   filteredOptions: Observable<any[]>;
   pacientes: Paciente[] = [];
 
