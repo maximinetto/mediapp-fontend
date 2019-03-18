@@ -23,7 +23,7 @@ export class SignoService {
   }
 
   listarPageablePacientes(busqueda: string){
-    return this.http.get(`${this.url}/signos/buscar/${busqueda}`);
+    return this.http.get(`${this.url}/signos/buscar?busqueda=${busqueda}`);
   }
 
   listarPorId(id: number){

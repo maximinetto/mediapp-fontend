@@ -1,8 +1,9 @@
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { PacienteService } from './../../../_service/paciente.service';
 import { map, switchMap, debounceTime, filter } from 'rxjs/operators';
 import { Paciente } from 'src/app/_model/paciente';
 import { SignoService } from './../../../_service/signo.service';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -23,23 +24,35 @@ export class SignoEdicionComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.builder.group({
-      'paciente': this.myControlPaciente
+      'paciente': this.myControlPaciente,
+      'fecha': new FormControl(new Date()),
+      'temperatura': new FormControl('',
+      [Validators.required,
+        Validators.pattern("[0-9]+(\.[0-9][0-9]?)?"),
+         Validators.maxLength(5)]
+         ),
+      'pulso': new FormControl('',[Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.maxLength(8)]),
+      'ritmo': new FormControl('',[Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.maxLength(8)])
     });
 
     this.filteredOptions = this.myControlPaciente.valueChanges.pipe(
       debounceTime(500),
       switchMap( busqueda => {
-        if(busqueda === ""){
-          return this.pacienteService.listarPageable(0,10); 
-        }else
+        console.log(busqueda);
+        if(typeof busqueda === "string")
         {
           return this.signoService.listarPageablePacientes(busqueda);
         }
+        else{
+          let texto = `${busqueda.nombres} ${busqueda.apellidos}`; 
+          return this.signoService.listarPageablePacientes(texto);
+        }
       }),
       map( (response: any) => {
-        if(response.content != null)
-          return response.content;
-
         return response;
       }));
   }
@@ -48,5 +61,8 @@ export class SignoEdicionComponent implements OnInit {
     console.log(`seleccionarPaciente: ${e.option.value}`);
   }
 
+  displayFn(value: Paciente){
+    return value? `${value.nombres} ${value.apellidos}`: value;
+  }
   
 }
