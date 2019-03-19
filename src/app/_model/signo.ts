@@ -3,7 +3,7 @@ import { Paciente } from "./paciente";
 export class Signo {
     id: number;
     paciente: Paciente;
-    fecha: Date;
+    fecha: string;
     temperatura: number;
     pulso: number;
     ritmoRespiratorio: number;

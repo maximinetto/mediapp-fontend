@@ -4,16 +4,16 @@
   <div>
     <mat-form-field id="auto">
       <input type="text" placeholder="Paciente" matInput [matAutocomplete]="autoPaciente" [formControl] = "myControlPaciente"
-      formControlName = "paciente" >
+      formControlName = "paciente" #textInput >
       <mat-autocomplete #autoPaciente = "matAutocomplete" [displayWith]="displayFn" 
-      (optionalSelected) = "seleccionarPaciente($event)">
+      (optionSelected) = "seleccionarPaciente($event)">
         <mat-option *ngFor = "let p of filteredOptions | async" [value] = "p">
           {{p.nombres}} {{p.apellidos}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="button" (click)="modal()" id="nuevo">Nuevo Paciente</button>
+    <button mat-flat-button color="accent" type="button" (click)="modal()" id="nuevo">Nuevo Paciente</button>
   </div>
 
   <mat-form-field>
@@ -23,17 +23,22 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Temperatura" [(ngModel)]="temperatura" formControlName="temperatura" NumbersOnly
+    <input matInput placeholder="Temperatura" formControlName="temperatura" NumbersOnly
     [allowDecimals]="true" >
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Pulso" [(ngModel)]="pulso" formControlName="pulso" NumbersOnly [allowDecimals] = "false">
+    <input matInput placeholder="Pulso" formControlName="pulso" NumbersOnly [allowDecimals] = "false">
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Ritmo Respiratorio" [(ngModel)]="ritmo" formControlName="ritmo" NumbersOnly 
+    <input matInput placeholder="Ritmo Respiratorio" formControlName="ritmo" NumbersOnly 
     [allowDecimals] = "false">
   </mat-form-field>
+  
+  <button mat-raised-button type="submit" [disabled]="!form.valid || !validar()" color="primary" >
+    Aceptar
+  </button>
+  
 
 </form>  

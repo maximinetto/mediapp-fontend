@@ -1,3 +1,6 @@
+import { DEFAULT_SIZE_PAGE } from './../../../_shared/var.constants';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { PacienteService } from './../../../_service/paciente.service';
 import { map, switchMap, debounceTime, filter } from 'rxjs/operators';
@@ -6,6 +9,8 @@ import { SignoService } from './../../../_service/signo.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { Signo } from 'src/app/_model/signo';
 
 @Component({
   selector: 'app-signo-edicion',
@@ -19,10 +24,34 @@ export class SignoEdicionComponent implements OnInit {
   filteredOptions: Observable<any[]>;
   pacientes: Paciente[] = [];
 
+  pacienteSeleccionado: Paciente;
 
-  constructor(private builder: FormBuilder, private signoService: SignoService, private pacienteService: PacienteService) { }
+  signoSeleccionado: Signo;
+
+  edicion: boolean = false;
+
+  constructor(private builder: FormBuilder, private signoService: SignoService, private pacienteService: PacienteService,
+    private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.formatForm();
+
+    this.autocomplete();
+
+    this.route.params.subscribe((params: Params) => {
+      let id = params['id'];
+      if(id != null)
+      {
+        this.signoSeleccionado = new Signo();
+        this.signoSeleccionado.id = id; 
+        this.edicion = true;
+      }
+
+    });
+    
+  }
+
+  formatForm(){
     this.form = this.builder.group({
       'paciente': this.myControlPaciente,
       'fecha': new FormControl(new Date()),
@@ -38,11 +67,12 @@ export class SignoEdicionComponent implements OnInit {
         Validators.pattern("^[0-9]*$"),
         Validators.maxLength(8)])
     });
+  }
 
+  autocomplete(){
     this.filteredOptions = this.myControlPaciente.valueChanges.pipe(
       debounceTime(500),
       switchMap( busqueda => {
-        console.log(busqueda);
         if(typeof busqueda === "string")
         {
           return this.signoService.listarPageablePacientes(busqueda);
@@ -57,12 +87,89 @@ export class SignoEdicionComponent implements OnInit {
       }));
   }
 
+  initForm(){
+
+    if(this.edicion){
+      this.signoService.listarPorId(this.signoSeleccionado.id).subscribe(data =>{
+        this.myControlPaciente.setValue(data.paciente);  
+        this.form.get('temperatura').setValue(data.temperatura);
+        this.form.get('fecha').setValue(data.fecha);
+        this.form.get('ritmo').setValue(data.ritmoRespiratorio);
+        this.form.get('pulso').setValue(data.pulso);
+      });
+    }
+
+  }
+
   seleccionarPaciente(e: any){
-    console.log(`seleccionarPaciente: ${e.option.value}`);
+    this.pacienteSeleccionado = e.option.value;
+    console.log(`pacienteSeleccionado:${this.pacienteSeleccionado}`)
   }
 
   displayFn(value: Paciente){
     return value? `${value.nombres} ${value.apellidos}`: value;
+  }
+
+  validar(){
+    let paciente = this.form.get('paciente').value;
+    
+    if(typeof paciente === 'string')
+      if(this.pacienteSeleccionado != null && paciente === this.pacienteSeleccionado.nombres + ' ' + 
+          this.pacienteSeleccionado.apellidos)
+        return true;
+      else    
+        return false;
+    else{
+      return true;
+    }
+    
+  }
+
+  aceptar(){
+    
+    if(this.pacienteSeleccionado != null){
+      let fecha = this.form.get('fecha').value;
+      let fechaConvertida = moment(fecha).format('YYYY-MM-DD');
+      let temperatura = this.form.get('temperatura').value;
+      let pulso = this.form.get('pulso').value;
+      let ritmo = this.form.get('ritmo').value;
+
+      if(!this.edicion){
+        let signo = new Signo();
+        signo.paciente = this.pacienteSeleccionado;
+        signo.fecha = fechaConvertida;
+        signo.temperatura = temperatura;
+        signo.pulso = pulso;
+        signo.ritmoRespiratorio = ritmo;
+
+        this.signoService.registrar(signo).subscribe(() =>{
+          this.signoService.listarPageable(0,DEFAULT_SIZE_PAGE).subscribe((data: any) => {
+            this.signoService.signoCambio.next(data);
+            
+          });
+          
+
+        });
+      }
+      else{
+        this.signoSeleccionado.paciente = this.pacienteSeleccionado
+        this.signoSeleccionado.fecha = fechaConvertida;
+        this.signoSeleccionado.temperatura = temperatura;
+        this.signoSeleccionado.pulso = pulso;
+        this.signoSeleccionado.ritmoRespiratorio = ritmo;
+        
+        this.signoService.modificar(this.signoSeleccionado).subscribe(() =>{
+          this.signoService.listarPageable(0,DEFAULT_SIZE_PAGE).subscribe((data: any) => {
+            this.signoService.signoCambio.next(data);
+            
+          });
+        });      
+      }  
+      this.router.navigate(['signo-vitales']);
+    }
+
+
+    
   }
   
 }

@@ -6,7 +6,7 @@
 
   <div class="example-header">
     <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar paciente">
+      <input matInput (keyup)="applyFilter($event.target.value)" [(ngModel)]="filter" placeholder="Buscar paciente">
     </mat-form-field>
   </div>
 

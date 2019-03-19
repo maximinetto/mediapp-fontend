@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SignoService {
-  signoCambio = new Subject<Signo[]>();
+  signoCambio = new Subject();
   mensajeCambio = new Subject<string>();
 
   url: string = HOST;

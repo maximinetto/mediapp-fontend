@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SignoService } from './../../_service/signo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Signo } from 'src/app/_model/signo';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-signo',
@@ -18,16 +18,28 @@ export class SignoComponent implements OnInit {
   pageIndex: number;
   dataSource: MatTableDataSource<Signo>;
   filtro: string = "";
-
+  filter: string;
 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private signoService: SignoService, public route: ActivatedRoute) { }
+  constructor(private signoService: SignoService, public route: ActivatedRoute, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.listar();
+    this.signoService.signoCambio.subscribe((data: any) => {
+      
+      let signos = data.content;
+      this.cantidad = data.totalElements;
+      this.tamanoPagina = DEFAULT_SIZE_PAGE;
+      this.pageIndex = 0;
+      this.filter = '';
+      this.dataSource = new MatTableDataSource(signos);
+    });
+    this.signoService.signoCambio.subscribe((data:any) =>{
+      this.snackBar.open("Se registró", "Aviso", { duration: 2000 });
+    });
   }
 
   listar(){
