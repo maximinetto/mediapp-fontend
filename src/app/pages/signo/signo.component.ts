@@ -68,7 +68,7 @@ export class SignoComponent implements OnInit {
     this.signoService.listarPageable(this.pageIndex, this.tamanoPagina).subscribe((data: any) => {
       let signos = data.content;
       this.cantidad = data.totalElements;
-
+      
       this.dataSource = new MatTableDataSource(signos);
       //this.dataSource.paginator = this.paginator;
       
@@ -104,10 +104,15 @@ export class SignoComponent implements OnInit {
       this.signoService.listarPageable(this.pageIndex, this.tamanoPagina).subscribe((data: any) => {
         let signos = data.content;
         this.cantidad = data.totalElements;
+        if(data.numberOfElements == 0 && this.pageIndex != 0){
+          this.pageIndex -= 1;
+          this.paginadoSinFiltro(); 
+        }
+        
+        this.filter = '';
         
         this.dataSource = new MatTableDataSource(signos);
         //this.dataSource.paginator = this.paginator;
-        this.signoService.signoCambio.next(data);
         this.signoService.mensajeCambio.next('SE ELIMINÓ');
       });
     });
