@@ -49,6 +49,8 @@ export class SignoEdicionComponent implements OnInit {
 
     });
     
+    this.initForm();
+
   }
 
   formatForm(){
@@ -92,8 +94,12 @@ export class SignoEdicionComponent implements OnInit {
     if(this.edicion){
       this.signoService.listarPorId(this.signoSeleccionado.id).subscribe(data =>{
         this.myControlPaciente.setValue(data.paciente);  
+        this.pacienteSeleccionado = data.paciente;
         this.form.get('temperatura').setValue(data.temperatura);
-        this.form.get('fecha').setValue(data.fecha);
+        
+        let fechaConvertida = new Date(data.fecha.replace(/-/g, '\/'));
+        console.log(fechaConvertida);
+        this.form.get('fecha').setValue(fechaConvertida);
         this.form.get('ritmo').setValue(data.ritmoRespiratorio);
         this.form.get('pulso').setValue(data.pulso);
       });
@@ -147,7 +153,7 @@ export class SignoEdicionComponent implements OnInit {
             this.signoService.signoCambio.next(data);
             
           });
-          
+          this.signoService.mensajeCambio.next('Se Registró');
 
         });
       }
@@ -161,8 +167,8 @@ export class SignoEdicionComponent implements OnInit {
         this.signoService.modificar(this.signoSeleccionado).subscribe(() =>{
           this.signoService.listarPageable(0,DEFAULT_SIZE_PAGE).subscribe((data: any) => {
             this.signoService.signoCambio.next(data);
-            
           });
+          this.signoService.mensajeCambio.next('Se modificó');
         });      
       }  
       this.router.navigate(['signo-vitales']);

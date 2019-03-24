@@ -37,8 +37,8 @@ export class SignoComponent implements OnInit {
       this.filter = '';
       this.dataSource = new MatTableDataSource(signos);
     });
-    this.signoService.signoCambio.subscribe((data:any) =>{
-      this.snackBar.open("Se registró", "Aviso", { duration: 2000 });
+    this.signoService.mensajeCambio.subscribe(data =>{
+      this.snackBar.open(data, "Aviso", { duration: 2000 });
     });
   }
 
