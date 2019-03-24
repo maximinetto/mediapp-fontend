@@ -32,6 +32,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { SignoComponent } from './pages/signo/signo.component';
 import { SignoEdicionComponent } from './pages/signo/signo-edicion/signo-edicion.component';
+import { PacienteDialogoComponent } from './pages/signo/signo-edicion/paciente-dialogo/paciente-dialogo.component';
 
 export function tokenGetter() {
   let tk = JSON.parse(sessionStorage.getItem(TOKEN_NAME));
@@ -63,9 +64,10 @@ export function tokenGetter() {
     PerfilComponent,
     SignoComponent,
     SignoEdicionComponent,
-    NumbersOnly
+    NumbersOnly,
+    PacienteDialogoComponent
   ],
-  entryComponents: [DialogoComponent, DialogoDetalleComponent],
+  entryComponents: [DialogoComponent, DialogoDetalleComponent, PacienteDialogoComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

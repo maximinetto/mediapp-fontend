@@ -13,7 +13,7 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <button mat-flat-button color="accent" type="button" (click)="modal()" id="nuevo">Nuevo Paciente</button>
+    <button mat-flat-button color="accent" type="button" (click)="openDialog()" id="nuevo">Nuevo Paciente</button>
   </div>
 
   <mat-form-field>
@@ -39,6 +39,8 @@
   <button mat-raised-button type="submit" [disabled]="!form.valid || !validar()" color="primary" >
     Aceptar
   </button>
-  
+  <button mat-raised-button type="button" color="accent" (click)="cancelar()">
+    Cancelar
+  </button>
 
 </form>  

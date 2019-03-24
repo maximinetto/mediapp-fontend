@@ -1,3 +1,4 @@
+import { Paciente } from './../_model/paciente';
 import { HttpClient } from '@angular/common/http';
 import { HOST } from './../_shared/var.constants';
 import { Injectable } from '@angular/core';
@@ -8,8 +9,9 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SignoService {
-  signoCambio = new Subject();
+  signoCambio = new Subject<Paciente>();
   mensajeCambio = new Subject<string>();
+  pacienteRegistro = new Subject<Paciente>();
 
   url: string = HOST;
   constructor(private http: HttpClient ) { }
@@ -24,6 +26,10 @@ export class SignoService {
 
   listarPageablePacientes(busqueda: string){
     return this.http.get(`${this.url}/signos/buscar?busqueda=${busqueda}`);
+  }
+
+  obtenerUltimoPacienteRegistrado(){
+    return this.http.get<Paciente>(`${this.url}/signos/lastPaciente`);
   }
 
   listarPorId(id: number){

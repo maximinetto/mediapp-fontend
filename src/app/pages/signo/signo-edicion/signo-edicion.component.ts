@@ -1,6 +1,7 @@
+import { PacienteDialogoComponent } from './paciente-dialogo/paciente-dialogo.component';
 import { DEFAULT_SIZE_PAGE } from './../../../_shared/var.constants';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { PacienteService } from './../../../_service/paciente.service';
 import { map, switchMap, debounceTime, filter } from 'rxjs/operators';
@@ -31,7 +32,7 @@ export class SignoEdicionComponent implements OnInit {
   edicion: boolean = false;
 
   constructor(private builder: FormBuilder, private signoService: SignoService, private pacienteService: PacienteService,
-    private route: ActivatedRoute, private router: Router) { }
+    private route: ActivatedRoute, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.formatForm();
@@ -51,6 +52,10 @@ export class SignoEdicionComponent implements OnInit {
     
     this.initForm();
 
+    this.signoService.pacienteRegistro.subscribe(data =>{
+      this.myControlPaciente.setValue(data);
+      this.pacienteSeleccionado = data;
+    })
   }
 
   formatForm(){
@@ -173,9 +178,18 @@ export class SignoEdicionComponent implements OnInit {
       }  
       this.router.navigate(['signo-vitales']);
     }
+  }
 
+  cancelar(){
+    this.router.navigate(['signo-vitales']);
+  }
 
-    
+  openDialog(){
+    let paciente = new Paciente();
+    this.dialog.open(PacienteDialogoComponent, {
+      width: '250px',
+      data: paciente
+    });
   }
   
 }
