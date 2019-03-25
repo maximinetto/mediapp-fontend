@@ -159,7 +159,7 @@ export class SignoEdicionComponent implements OnInit {
             
           });
           this.signoService.mensajeCambio.next('Se Registró');
-
+          this.router.navigate(['signo-vitales']);
         });
       }
       else{
@@ -174,9 +174,10 @@ export class SignoEdicionComponent implements OnInit {
             this.signoService.signoCambio.next(data);
           });
           this.signoService.mensajeCambio.next('Se modificó');
+          this.router.navigate(['signo-vitales']);
         });      
       }  
-      this.router.navigate(['signo-vitales']);
+      
     }
   }
 

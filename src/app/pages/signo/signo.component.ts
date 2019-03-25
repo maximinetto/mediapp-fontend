@@ -35,6 +35,7 @@ export class SignoComponent implements OnInit {
       this.tamanoPagina = DEFAULT_SIZE_PAGE;
       this.pageIndex = 0;
       this.filter = '';
+      this.filtro = "";
       this.dataSource = new MatTableDataSource(signos);
     });
     this.signoService.mensajeCambio.subscribe(data =>{

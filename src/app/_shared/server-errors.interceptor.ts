@@ -27,17 +27,31 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                 console.log(err);
                 //https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
                 if (err.status === 400) {
-                    this.snackBar.open(err.mensaje, 'ERROR 400', { duration: 5000 });
+                    this.snackBar.open( err.error.detalles, err.error.mensaje, 
+                    { 
+                        duration: 5000,
+                        panelClass : ['snackbar']
+                    });
+
                 }
                 else if (err.status === 401) {
                     console.log(err.message);
-                    this.snackBar.open(err.message, 'ERROR 401', { duration: 5000 });
+                    this.snackBar.open(err.error.detalles, err.error.mensaje, { 
+                        duration: 5000,
+                        panelClass : ['snackbar']
+                    });
                     //this.router.navigate(['/login']);
                 }
                 else if (err.status === 500) {
-                    this.snackBar.open(err.error.mensaje, 'ERROR 500', { duration: 5000 });
+                    this.snackBar.open(err.error.detalles, err.error.mensaje, { 
+                        duration: 5000,
+                        panelClass : ['snackbar']
+                    });
                 } else {
-                    this.snackBar.open(err.error.mensaje, 'ERROR', { duration: 5000 });
+                    this.snackBar.open(err.error.detalles, err.error.mensaje, { 
+                        duration: 5000,
+                        panelClass : ['snackbar']
+                    });
                 }
                 return EMPTY;
             }));
