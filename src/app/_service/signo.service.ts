@@ -11,7 +11,6 @@ import { Subject } from 'rxjs';
 export class SignoService {
   signoCambio = new Subject<Paciente>();
   mensajeCambio = new Subject<string>();
-  pacienteRegistro = new Subject<Paciente>();
 
   url: string = HOST;
   constructor(private http: HttpClient ) { }
@@ -22,14 +21,6 @@ export class SignoService {
 
   listarPageablePorPaciente(page: number, size: number, busqueda: string){
     return this.http.get(`${this.url}/signos/busqueda/pageable?page=${page}&size=${size}&busqueda=${busqueda}&sort=paciente.nombres,paciente.apellidos,fecha`);
-  }
-
-  listarPageablePacientes(busqueda: string){
-    return this.http.get(`${this.url}/signos/buscar?busqueda=${busqueda}`);
-  }
-
-  obtenerUltimoPacienteRegistrado(){
-    return this.http.get<Paciente>(`${this.url}/signos/lastPaciente`);
   }
 
   listarPorId(id: number){

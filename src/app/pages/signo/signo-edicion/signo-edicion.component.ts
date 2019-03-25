@@ -52,7 +52,7 @@ export class SignoEdicionComponent implements OnInit {
     
     this.initForm();
 
-    this.signoService.pacienteRegistro.subscribe(data =>{
+    this.pacienteService.pacienteRegistro.subscribe(data =>{
       this.myControlPaciente.setValue(data);
       this.pacienteSeleccionado = data;
     })
@@ -82,11 +82,11 @@ export class SignoEdicionComponent implements OnInit {
       switchMap( busqueda => {
         if(typeof busqueda === "string")
         {
-          return this.signoService.listarPageablePacientes(busqueda);
+          return this.pacienteService.listarPageablePacientes(busqueda);
         }
         else{
           let texto = `${busqueda.nombres} ${busqueda.apellidos}`; 
-          return this.signoService.listarPageablePacientes(texto);
+          return this.pacienteService.listarPageablePacientes(texto);
         }
       }),
       map( (response: any) => {

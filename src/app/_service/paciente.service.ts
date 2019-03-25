@@ -11,6 +11,8 @@ export class PacienteService {
 
   pacienteCambio = new Subject<Paciente[]>();
   mensajeCambio = new Subject<string>();
+  
+  pacienteRegistro = new Subject<Paciente>();
 
   url: string = HOST;
 
@@ -22,6 +24,14 @@ export class PacienteService {
 
   listarPageable(p: number, s: number) {
     return this.http.get(`${this.url}/pacientes/pageable?page=${p}&size=${s}`);
+  }
+
+  listarPageablePacientes(busqueda: string){
+    return this.http.get(`${this.url}/pacientes/buscar?busqueda=${busqueda}`);
+  }
+
+  obtenerUltimoPacienteRegistrado(){
+    return this.http.get<Paciente>(`${this.url}/pacientes/lastPaciente`);
   }
 
   listarPorId(idPaciente: number) {

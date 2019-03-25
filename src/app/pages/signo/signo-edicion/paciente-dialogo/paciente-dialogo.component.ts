@@ -39,10 +39,11 @@ export class PacienteDialogoComponent implements OnInit {
   operar(){
     this.createPaciente();
 
-    this.pacienteService.registrar(this.paciente).subscribe(data =>{
-      this.signoService.obtenerUltimoPacienteRegistrado().subscribe(data => {
-        this.signoService.pacienteRegistro.next(data);
-      })
+    this.pacienteService.registrar(this.paciente).subscribe(() =>{
+      this.pacienteService.obtenerUltimoPacienteRegistrado().subscribe(data => {
+        this.pacienteService.pacienteRegistro.next(data);
+      });
+      console.log("Se ejecutó el registrar");
     });
     this.dialogRef.close();
     
