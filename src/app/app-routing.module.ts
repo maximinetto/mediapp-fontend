@@ -56,7 +56,7 @@ const routes: Routes = [
   { path: 'signo-vitales', component: SignoComponent, children: [
     { path: 'nuevo', component: SignoEdicionComponent },
     { path: 'edicion/:id', component: SignoEdicionComponent }
-  ]}
+  ], canActivate: [GuardService]}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

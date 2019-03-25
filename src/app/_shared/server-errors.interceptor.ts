@@ -27,7 +27,17 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                 console.log(err);
                 //https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
                 if (err.status === 400) {
-                    this.snackBar.open( err.error.detalles, err.error.mensaje, 
+                    let mensaje: string;
+                    let accion: string;
+                    if(err.error.detalles == null){
+                        mensaje = err.error.error;
+                        accion = err.error.error_description;
+                    }
+                    else{
+                        mensaje = err.error.detalles;
+                        accion = err.error.mensaje;
+                    }
+                    this.snackBar.open( mensaje, accion , 
                     { 
                         duration: 5000,
                         panelClass : ['snackbar']
@@ -36,19 +46,51 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                 }
                 else if (err.status === 401) {
                     console.log(err.message);
-                    this.snackBar.open(err.error.detalles, err.error.mensaje, { 
+                    let mensaje: string;
+                    let accion: string;
+                    if(err.error.detalles == null){
+                        mensaje = err.error.error;
+                        accion = err.error.error_description;
+                    }
+                    else{
+                        mensaje = err.error.detalles;
+                        accion = err.error.mensaje;
+                    }
+                    this.snackBar.open(mensaje, accion, { 
                         duration: 5000,
                         panelClass : ['snackbar']
                     });
                     //this.router.navigate(['/login']);
                 }
                 else if (err.status === 500) {
-                    this.snackBar.open(err.error.detalles, err.error.mensaje, { 
+                    console.log(err.message);
+                    let mensaje: string;
+                    let accion: string;
+                    if(err.error.detalles == null){
+                        mensaje = err.error.error;
+                        accion = err.error.error_description;
+                    }
+                    else{
+                        mensaje = err.error.detalles;
+                        accion = err.error.mensaje;
+                    }
+                    this.snackBar.open(mensaje, accion, { 
                         duration: 5000,
                         panelClass : ['snackbar']
                     });
                 } else {
-                    this.snackBar.open(err.error.detalles, err.error.mensaje, { 
+                    console.log(err.message);
+                    let mensaje: string;
+                    let accion: string;
+                    if(err.error.detalles == null){
+                        mensaje = err.error.error;
+                        accion = err.error_description;
+                    }
+                    else{
+                        mensaje = err.error.detalles;
+                        accion = err.error.mensaje;
+                    }
+                    this.snackBar.open(mensaje, accion, {
                         duration: 5000,
                         panelClass : ['snackbar']
                     });
